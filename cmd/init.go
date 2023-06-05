@@ -39,6 +39,14 @@ var initCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
+		composePath := path + "/docker-compose.yml"
+
+		// check if docker-compose.yml exists
+		if _, err := os.Stat(composePath); os.IsNotExist(err) {
+			fmt.Println("Please run arkectl install before init.")
+			os.Exit(1)
+		}
+
 		// set PROJECT_ID env var
 		e := os.Setenv("PROJECT_ID", args[0])
 		if e != nil {
@@ -47,7 +55,7 @@ var initCmd = &cobra.Command{
 		}
 
 		// runs docker compose up at ARKEPATH file location
-		command := exec.Command("docker", "compose", "-f", path+"/docker-compose.yml", "up")
+		command := exec.Command("docker", "compose", "-f", composePath, "up")
 		command.Stdout = os.Stdout
 		command.Stderr = os.Stderr
 		err := command.Run()
