@@ -14,7 +14,7 @@ import (
 var cfgFile string
 
 var rootCmd = &cobra.Command{
-	Use:   "arke",
+	Use:   "arkectl",
 	Short: "CLI for Arke applications",
 	Long:  `A set of commands to help you build Arke applications.`,
 }

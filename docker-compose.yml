@@ -1,0 +1,56 @@
+# Version of docker-compose.
+version: "3"
+
+# Containers we're going to run.
+services:
+  # Our Phoenix container.
+  phoenix:
+    image: arkemis/phoenix_starter:latest
+    environment:
+      # Variables to connect to our Postgres server.
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: arke-test
+      DB_HOSTNAME: db
+      DB_PORT: 5432
+
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: arke-test
+      PGPORT: 5432
+      PGHOST: db
+
+      PROJECT_ID: ${PROJECT_ID}
+
+      MIX_ENV: prod
+      SECRET_KEY_BASE: change_me
+    ports:
+      # Mapping the port to make the Phoenix app accessible outside of the container.
+      - "4000:4000"
+    depends_on:
+      # The DB container needs to be started before we start this container.
+      - db
+  db:
+    # We use the predefined Postgres image.
+    image: postgres:14.4
+    environment:
+      # Set user/password for Postgres.
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      # Set a path where Postgres should store the data.
+      PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
+    ports:
+      # Mapping the port to make the Phoenix app accessible outside of the container.
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  console:
+    image: arkemis/arke-console:latest
+    environment:
+      PROJECT_ID: ${PROJECT_ID}
+    ports:
+      - "3100:3100"
+# Define the volumes.
+volumes:
+  pgdata:
