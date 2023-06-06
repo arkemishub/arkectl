@@ -1,4 +1,4 @@
-### arkectl
+# arkectl
 
 ## Setup
 
@@ -10,13 +10,20 @@ export ARKEPATH=$HOME/arke
 
 ## Usage
 
-1. Install arkectl
+### Install arkectl
 
-   ```bash
-   arkectl install
-   ```
+```bash
+arkectl install
+```
 
-2. Create a new project
-   ```bash
-   arkectl init my_project
-   ```
+### Create a new project
+
+```bash
+arkectl init my_project
+```
+
+### Start development server
+
+```bash
+arkectl start
+```
