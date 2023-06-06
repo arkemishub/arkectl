@@ -44,6 +44,7 @@ brews:
   tap:
     owner: arkemishub
     name: homebrew-arkectl
+  license: Apache-2.0
 
 # The lines beneath this are called `modelines`. See `:help modeline`
 # Feel free to remove those if you don't want/use them.
