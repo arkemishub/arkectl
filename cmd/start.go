@@ -24,14 +24,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const COMPOSE_FILE = "https://raw.githubusercontent.com/arkemishub/arkectl/main/docker-compose.yml"
-
-var installCmd = &cobra.Command{
-	Use:   "install",
-	Short: "Setup local enviroment for working with arkectl",
-	Long:  `Downloads docker-compose.yml and other files needed to run arkectl locally to ARKEPATH directory.`,
+// startCmd represents the start command
+var startCmd = &cobra.Command{
+	Use:   "start",
+	Short: "Runs Arke backend and console",
+	Long:  `Runs Arke backend and console.`,
 	Run: func(cmd *cobra.Command, args []string) {
-
 		// check if ARKEPATH exists within env vars
 		path := os.Getenv("ARKEPATH")
 		if path == "" {
@@ -39,18 +37,26 @@ var installCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		// get docker-compose.yml with curl
-		_, err := exec.Command("curl", "-o", path+"/docker-compose.yml", COMPOSE_FILE, "--create-dirs").Output()
+		composePath := path + "/docker-compose.yml"
 
-		if err != nil {
-			fmt.Println("Error downloading docker-compose.yml", err)
+		// check if docker-compose.yml exists
+		if _, err := os.Stat(composePath); os.IsNotExist(err) {
+			fmt.Println("Please run arkectl install before init.")
 			os.Exit(1)
 		}
 
-		fmt.Println("arkectl has been installed successfully.")
+		// runs docker compose up at ARKEPATH file location
+		command := exec.Command("docker", "compose", "-f", composePath, "up")
+		command.Stdout = os.Stdout
+		command.Stderr = os.Stderr
+		err := command.Run()
+		if err != nil {
+			fmt.Println("Error running docker compose up", err)
+			os.Exit(1)
+		}
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(installCmd)
+	rootCmd.AddCommand(startCmd)
 }
