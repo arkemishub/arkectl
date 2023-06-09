@@ -1,5 +1,20 @@
 # arkectl
 
+## Install
+
+Open your terminal and install the CLI with GoLang:
+
+```
+go install github.com/arkemishub/arkectl@arkectl
+```
+
+or with Homebrew:
+
+```
+brew tap arkemishub/homebrew-arkectl
+brew install arkectl
+```
+
 ## Setup
 
 Create a new environment variable within your `.zshrc` or `.bashrc` file.
