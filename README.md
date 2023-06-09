@@ -19,8 +19,16 @@ arkectl install
 ### Create a new project
 
 ```bash
-arkectl init my_project
+arkectl create-app <project-name>
 ```
+
+Flags:
+
+- `--interactive` - Starts the interactive mode of the command
+- `--local` - Clones arke repositories locally instead of using Docker.
+- `--frontend` - Creates only the frontend app. Works only with --local flag
+- `--console` - Clones only the console repository. Works only with --local flag
+- `--backend` - Creates only the backend app. Works only with --local flag. Under development 🚧
 
 ### Start development server
 

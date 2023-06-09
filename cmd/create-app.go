@@ -233,8 +233,8 @@ var createAppCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(createAppCmd)
 	createAppCmd.Flags().BoolP("interactive", "i", false, "Use interactive version of create-app command")
-	createAppCmd.Flags().BoolP("local", "l", false, "Creates an app locally without using Docker")
-	createAppCmd.Flags().BoolP("frontend", "f", false, "Creates only the frontned app. Works only with --local flag")
+	createAppCmd.Flags().BoolP("local", "l", false, "Clones arke repositories locally instead of using Docker")
+	createAppCmd.Flags().BoolP("frontend", "f", false, "Creates only the frontend app. Works only with --local flag")
 	createAppCmd.Flags().BoolP("backend", "b", false, "Clones only the console repository. Works only with --local flag")
 	createAppCmd.Flags().BoolP("console", "c", false, "Creates only the backend app. Works only with --local flag")
 }
