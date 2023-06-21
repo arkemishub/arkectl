@@ -24,11 +24,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// startCmd represents the start command
-var startCmd = &cobra.Command{
-	Use:   "start",
-	Short: "Runs Arke backend and console",
-	Long:  `Runs Arke backend and console.`,
+var updateCmd = &cobra.Command{
+	Use:   "update",
+	Short: "Updates Arke backend and console.",
+	Long:  `Updates Arke backend and console.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// check if ARKEPATH exists within env vars
 		path := os.Getenv("ARKEPATH")
@@ -41,22 +40,22 @@ var startCmd = &cobra.Command{
 
 		// check if docker-compose.yml exists
 		if _, err := os.Stat(composePath); os.IsNotExist(err) {
-			fmt.Println("Please run arkectl install before start.")
+			fmt.Println("Please run arkectl install.")
 			os.Exit(1)
 		}
 
-		// runs docker compose up at ARKEPATH file location
-		command := exec.Command("docker", "compose", "-f", composePath, "up")
+		// runs docker compose pull at ARKEPATH file location
+		command := exec.Command("docker", "compose", "-f", composePath, "pull")
 		command.Stdout = os.Stdout
 		command.Stderr = os.Stderr
 		err := command.Run()
 		if err != nil {
-			fmt.Println("Error running docker compose up", err)
+			fmt.Println("Error running docker compose pull", err)
 			os.Exit(1)
 		}
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(startCmd)
+	rootCmd.AddCommand(updateCmd)
 }
