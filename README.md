@@ -50,3 +50,9 @@ Flags:
 ```bash
 arkectl start
 ```
+
+### Update docker images
+
+```bash
+arkectl update
+```

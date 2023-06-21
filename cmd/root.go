@@ -27,9 +27,10 @@ import (
 var cfgFile string
 
 var rootCmd = &cobra.Command{
-	Use:   "arkectl",
-	Short: "CLI for Arke applications",
-	Long:  `A set of commands to help you build Arke applications.`,
+	Use:     "arkectl",
+	Short:   "CLI for Arke applications",
+	Long:    `A set of commands to help you build Arke applications.`,
+	Version: "0.0.5",
 }
 
 func Execute() {
