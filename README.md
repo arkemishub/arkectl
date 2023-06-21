@@ -5,7 +5,7 @@
 Open your terminal and install the CLI with GoLang:
 
 ```
-go install github.com/arkemishub/arkectl@arkectl
+go install github.com/arkemishub/arkectl@latest
 ```
 
 or with Homebrew:
