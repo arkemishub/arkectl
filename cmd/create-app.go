@@ -32,6 +32,7 @@ type InputOptions struct {
 	Frontend    bool
 	Backend     bool
 	Console     bool
+	Template    string
 }
 
 // questions to ask the user
@@ -59,6 +60,7 @@ func getInputs(cmd cobra.Command, args []string) InputOptions {
 			ProjectName string
 			Local       bool
 			Repos       []string
+			Template    string
 		}{}
 
 		err := survey.Ask(qs, &answers)
@@ -72,7 +74,7 @@ func getInputs(cmd cobra.Command, args []string) InputOptions {
 
 		if answers.Local {
 			repoQs := &survey.MultiSelect{Message: "Which repo do you want to initialize?", Options: []string{"Frontend", "Backend", "Console"}, Default: []string{"Frontend", "Backend", "Console"}}
-			err := survey.AskOne(repoQs, &answers.Repos)
+			err = survey.AskOne(repoQs, &answers.Repos)
 			if err != nil {
 				fmt.Println(err.Error())
 				os.Exit(1)
@@ -90,6 +92,16 @@ func getInputs(cmd cobra.Command, args []string) InputOptions {
 			}
 		}
 
+		if options.Frontend {
+			templateQs := &survey.Input{Message: "Which template do you want to use for the frontend?", Default: "nextjs-base"}
+			err := survey.AskOne(templateQs, &answers.Template)
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+			options.Template = answers.Template
+		}
+
 	} else {
 		if len(args) == 0 {
 			fmt.Println("Please provide a project name or use the --interactive flag")
@@ -103,6 +115,7 @@ func getInputs(cmd cobra.Command, args []string) InputOptions {
 		options.Frontend, _ = cmd.Flags().GetBool("frontend")
 		options.Backend, _ = cmd.Flags().GetBool("backend")
 		options.Console, _ = cmd.Flags().GetBool("console")
+		options.Template, _ = cmd.Flags().GetString("template")
 
 		// if none of console, frontend or backend flags are set, set all to true
 		if !cmd.Flags().Changed("console") && !cmd.Flags().Changed("frontend") && !cmd.Flags().Changed("backend") {
@@ -127,7 +140,7 @@ func createConsoleApp(projectName string) {
 }
 
 // createFrontendApp clones the frontend repository
-func createFrontendApp(projectName string) {
+func createFrontendApp(projectName string, template string) {
 	_, err := exec.Command("git", "clone", "https://github.com/arkemishub/frontend-starters", "-n", fmt.Sprintf("%v/temp", projectName)).Output()
 	if err != nil {
 		fmt.Println("Error cloning frontend repository", err)
@@ -140,7 +153,7 @@ func createFrontendApp(projectName string) {
 		os.Exit(1)
 	}
 
-	_, err = exec.Command("git", "-C", fmt.Sprintf("%v/temp", projectName), "sparse-checkout", "set", "examples/nextjs-base").Output()
+	_, err = exec.Command("git", "-C", fmt.Sprintf("%v/temp", projectName), "sparse-checkout", "set", fmt.Sprintf("examples/%v", template)).Output()
 	if err != nil {
 		fmt.Println("Error sparse checking out frontend repository", err)
 		os.Exit(1)
@@ -152,7 +165,7 @@ func createFrontendApp(projectName string) {
 		os.Exit(1)
 	}
 
-	err = os.Rename(fmt.Sprintf("%v/temp/examples/nextjs-base", projectName), fmt.Sprintf("%v/frontend", projectName))
+	err = os.Rename(fmt.Sprintf("%v/temp/examples/%v", projectName, template), fmt.Sprintf("%v/frontend", projectName))
 	if err != nil {
 		fmt.Println("Error moving files from frontend repository", err)
 		os.Exit(1)
@@ -191,7 +204,7 @@ var createAppCmd = &cobra.Command{
 			}
 
 			if shouldCreateAll || options.Frontend {
-				createFrontendApp(options.ProjectName)
+				createFrontendApp(options.ProjectName, options.Template)
 			}
 
 		} else {
@@ -237,4 +250,5 @@ func init() {
 	createAppCmd.Flags().BoolP("frontend", "f", false, "Creates only the frontend app. Works only with --local flag")
 	createAppCmd.Flags().BoolP("backend", "b", false, "Clones only the console repository. Works only with --local flag")
 	createAppCmd.Flags().BoolP("console", "c", false, "Creates only the backend app. Works only with --local flag")
+	createAppCmd.Flags().StringP("template", "t", "nextjs-base", "Template to use for frontend app. Works only with --local flag")
 }
