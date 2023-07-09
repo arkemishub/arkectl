@@ -39,11 +39,14 @@ arkectl create-app <project-name>
 
 Flags:
 
-- `--interactive` - Starts the interactive mode of the command
-- `--local` - Clones arke repositories locally instead of using Docker.
-- `--frontend` - Creates only the frontend app. Works only with --local flag
-- `--console` - Clones only the console repository. Works only with --local flag
-- `--backend` - Creates only the backend app. Works only with --local flag. Under development 🚧
+| Flag          | Shorthand | Description                                                               | Default       |
+| ------------- | --------- | ------------------------------------------------------------------------- | ------------- |
+| `interactive` | `i`       | Starts the interactive mode.                                              | false         |
+| `local`       | `l`       | Clones arke repositories locally instead of using Docker.                 | false         |
+| `frontend`    | `f`       | Creates only the frontend app. Works only with `--local` flag.            | false         |
+| `backend`     | `b`       | Creates only the backend app. Works only with `--local` flag.             | false         |
+| `console`     | `c`       | Clones only the console repository. Works only with `--local` flag.       | false         |
+| `template`    | `t`       | Template to be used for the frontend app. Works only with `--local` flag. | `nextjs-base` |
 
 ### Start development server
 

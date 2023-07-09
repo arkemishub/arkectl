@@ -180,6 +180,18 @@ func createFrontendApp(projectName string, template string) {
 	fmt.Println("frontend ✅")
 }
 
+// createBackendApp runs mix arke.new
+func createBackendApp(projectName string) {
+	_, err := exec.Command("mix", "arke.new", fmt.Sprintf("%v/backend", projectName), fmt.Sprintf("--app=%v", projectName), "--install=false").Output()
+
+	if err != nil {
+		fmt.Println("Error running mix arke.new", err)
+		os.Exit(1)
+	}
+
+	fmt.Println("backend ✅")
+}
+
 // createAppCmd is the Cobra command for creating a new Arke application
 var createAppCmd = &cobra.Command{
 	Use:   "create-app [project name]",
@@ -205,6 +217,10 @@ var createAppCmd = &cobra.Command{
 
 			if shouldCreateAll || options.Frontend {
 				createFrontendApp(options.ProjectName, options.Template)
+			}
+
+			if shouldCreateAll || options.Backend {
+				createBackendApp(options.ProjectName)
 			}
 
 		} else {
