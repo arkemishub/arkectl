@@ -47,6 +47,14 @@ var installCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
+		// install arke_new mix archive
+		_, err = exec.Command("mix", "archive.install", "hex", "arke_new", "--force").Output()
+
+		if err != nil {
+			fmt.Println("Error installing arke_new mix archive", err)
+			os.Exit(1)
+		}
+
 		fmt.Println("arkectl has been installed successfully.")
 	},
 }
