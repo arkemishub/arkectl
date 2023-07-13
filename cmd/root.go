@@ -30,7 +30,7 @@ var rootCmd = &cobra.Command{
 	Use:     "arkectl",
 	Short:   "CLI for Arke applications",
 	Long:    `A set of commands to help you build Arke applications.`,
-	Version: "0.0.8",
+	Version: "0.0.9",
 }
 
 func Execute() {
