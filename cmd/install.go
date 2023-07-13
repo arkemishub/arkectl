@@ -29,7 +29,7 @@ const COMPOSE_FILE = "https://raw.githubusercontent.com/arkemishub/arkectl/main/
 var installCmd = &cobra.Command{
 	Use:   "install",
 	Short: "Setup local enviroment for working with arkectl",
-	Long:  `Downloads docker-compose.yml and other files needed to run arkectl locally to ARKEPATH directory.`,
+	Long:  `Downloads docker-compose.yml and arke.new mix archive and other files needed to run arkectl locally to ARKEPATH directory.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// check if ARKEPATH exists within env vars
