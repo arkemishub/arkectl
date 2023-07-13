@@ -26,8 +26,8 @@ import (
 
 var updateCmd = &cobra.Command{
 	Use:   "update",
-	Short: "Updates Arke backend and console.",
-	Long:  `Updates Arke backend and console.`,
+	Short: "Updates docker-compose.yml and arke.new mix archive.",
+	Long:  `Updates docker-compose.yml and arke.new mix archive.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// check if ARKEPATH exists within env vars
 		path := os.Getenv("ARKEPATH")
@@ -53,6 +53,21 @@ var updateCmd = &cobra.Command{
 			fmt.Println("Error running docker compose pull", err)
 			os.Exit(1)
 		}
+
+		// updates arke_new mix archive
+		_, err = exec.Command("mix", "archive.uninstall", "arke_new", "--force").Output()
+		if err != nil {
+			fmt.Println("Error updating arke_new mix archive", err)
+			os.Exit(1)
+		}
+
+		_, err = exec.Command("mix", "archive.install", "hex", "arke_new", "--force").Output()
+		if err != nil {
+			fmt.Println("Error updating arke_new mix archive", err)
+			os.Exit(1)
+		}
+
+		fmt.Println("arkectl has been updated successfully.")
 	},
 }
 
